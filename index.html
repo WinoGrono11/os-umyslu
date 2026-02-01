@@ -1,58 +1,118 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OS Umysłu v1</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OS Umysłu</title>
+
+  <!-- lo-fi font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    <header>
-        <h1>OS Umysłu v1 - Twoja przestrzeń</h1>
-        <nav>
-            <button id="btnTasks">Giga Lista</button>
-            <button id="btnTimeline">Oś Czasu</button>
-            <button id="btnChill">Strefa Chill</button>
-            <button id="btnDiary">Dziennik</button>
-        </nav>
-    </header>
 
-    <main>
-        <section id="tasksSection" class="hidden">
-            <h2>Giga Lista Zadań</h2>
-            <div id="taskForm">
-                <input type="text" id="newTask" placeholder="Nowe zadanie">
-                <input type="number" id="taskPoints" placeholder="Punkty">
-                <button id="addTaskBtn">Dodaj zadanie</button>
-            </div>
-            <ul id="taskList"></ul>
-        </section>
+  <!-- ================= HEADER ================= -->
+  <header>
+    <h1>🧠 OS Umysłu</h1>
+    <div class="subtitle">zeszyt na sterydach · chaos · lo‑fi · ADHD/autyzm</div>
+  </header>
 
-        <section id="timelineSection" class="hidden">
-            <h2>Oś Czasu</h2>
-            <div id="timeline"></div>
-            <button id="addEventBtn">Dodaj wydarzenie</button>
-        </section>
+  <!-- ================= NAV ================= -->
+  <nav>
+    <button data-view="tasks">Zadania</button>
+    <button data-view="timeline">Oś czasu</button>
+    <button data-view="journal">Dziennik</button>
+    <button data-view="chill">Strefa Chill</button>
+    <button data-view="assistant">Assistant Notes</button>
+  </nav>
 
-        <section id="chillSection" class="hidden">
-            <h2>Strefa Chill</h2>
-            <textarea id="chillInput" placeholder="Tu możesz pisać lub rysować..."></textarea>
-            <canvas id="chillCanvas"></canvas>
-        </section>
+  <!-- ================= MAIN ================= -->
+  <main>
 
-        <section id="diarySection" class="hidden">
-            <h2>Dziennik Szyfrowany</h2>
-            <input type="password" id="diaryPassword" placeholder="Hasło">
-            <textarea id="diaryInput" placeholder="Twoje wpisy..."></textarea>
-            <button id="saveDiaryBtn">Zapisz wpis</button>
-            <button id="loadDiaryBtn">Załaduj wpis</button>
-        </section>
-    </main>
+    <!-- ===== ZADANIA ===== -->
+    <section id="tasks" class="view">
+      <h2>✅ Giga Lista Zadań</h2>
 
-    <footer>
-        <p>&copy; OS Umysłu v1 - Chaos, lo-fi, ADHD-friendly</p>
-    </footer>
+      <div class="panel">
+        <input id="taskTitle" placeholder="co trzeba zrobić?" />
+        <input id="taskPoints" type="number" placeholder="punkty" />
+        <button id="addTask">Dodaj</button>
+      </div>
 
-    <script src="app.js"></script>
+      <div class="points">
+        Punkty: <span id="pointsTotal">0</span>
+      </div>
+
+      <ul id="taskList"></ul>
+    </section>
+
+    <!-- ===== OŚ CZASU ===== -->
+    <section id="timeline" class="view hidden">
+      <h2>🕒 Oś Czasu</h2>
+
+      <div class="panel">
+        <input type="date" id="timeDate">
+        <input type="time" id="timeHour">
+        <input id="timeText" placeholder="co się wydarzyło?" />
+        <button id="addTime">Dodaj</button>
+      </div>
+
+      <div id="timelineGraph"></div>
+    </section>
+
+    <!-- ===== DZIENNIK ===== -->
+    <section id="journal" class="view hidden">
+      <h2>📓 Dziennik</h2>
+
+      <textarea id="journalText" placeholder="pisz cokolwiek…"></textarea>
+      <button id="saveJournal">Zapisz</button>
+
+      <ul id="journalList"></ul>
+    </section>
+
+    <!-- ===== STREFA CHILL ===== -->
+    <section id="chill" class="view hidden">
+      <h2>🌿 Strefa Chill</h2>
+
+      <canvas id="drawCanvas"></canvas>
+
+      <textarea id="chillNotes" placeholder="myśli, rysunki, chaos…"></textarea>
+
+      <div class="panel">
+        <button id="randomChaos">Losowy Chaos</button>
+        <button id="clearCanvas">Wyczyść</button>
+      </div>
+    </section>
+
+    <!-- ===== ASSISTANT NOTES ===== -->
+    <section id="assistant" class="view hidden">
+      <h2>🤖 Assistant Notes</h2>
+
+      <button id="copyPrompt">Kopiuj prompt DeepThinking</button>
+
+      <textarea id="assistantInput" placeholder="wklej odpowiedź asystenta (JSON lub tekst)"></textarea>
+
+      <div class="panel">
+        <button id="previewAssistant">Podgląd</button>
+        <button id="saveAssistant">Zapisz</button>
+      </div>
+
+      <div id="assistantPreview"></div>
+
+      <ul id="assistantList"></ul>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    OS Umysłu · offline · lokalnie · bez chmury · v2
+  </footer>
+
+  <!-- ================= JS ================= -->
+  <script src="app.js"></script>
 </body>
 </html>
