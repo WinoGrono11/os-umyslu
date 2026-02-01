@@ -1,143 +1,167 @@
-// OS Umysłu v1 - app logic
+/* ================= app.js - OS Umysłu v2 ================= */
 
-// --- Helper Functions ---
-function $(id) { return document.getElementById(id); }
-function showSection(sectionId) {
-    ['tasksSection','timelineSection','chillSection','diarySection'].forEach(id => {
-        $(id).classList.add('hidden');
-    });
-    $(sectionId).classList.remove('hidden');
+// ===== UTILS =====
+function escapeHtml(s){ return (s||'').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\'':'&#39;','"':'&quot;'}[c])); }
+
+function $(id){ return document.getElementById(id); }
+
+function showView(viewId){
+    document.querySelectorAll('main .view').forEach(v=>v.classList.add('hidden'));
+    $(viewId).classList.remove('hidden');
 }
 
-// --- Navigation ---
-$('btnTasks').addEventListener('click', () => showSection('tasksSection'));
-$('btnTimeline').addEventListener('click', () => showSection('timelineSection'));
-$('btnChill').addEventListener('click', () => showSection('chillSection'));
-$('btnDiary').addEventListener('click', () => showSection('diarySection'));
+// ===== NAVIGATION =====
+document.querySelectorAll('nav button[data-view]').forEach(btn=>{
+    btn.addEventListener('click', ()=> showView(btn.getAttribute('data-view')));
+});
 
-// --- Giga Lista Zadań ---
-let tasks = [];
+// ================= GIGA LISTA ZADAŃ =================
+let tasks = JSON.parse(localStorage.getItem('tasks')||'[]');
+let totalPoints = 0;
 
-function renderTasks() {
-    const ul = $('taskList');
-    ul.innerHTML = '';
-    tasks.forEach((t, i) => {
+function renderTasks(){
+    const ul = $('taskList'); ul.innerHTML=''; totalPoints=0;
+    tasks.forEach((t,i)=>{
         const li = document.createElement('li');
-        li.innerHTML = `<input type='checkbox' data-index='${i}' ${t.done ? 'checked' : ''}> ${t.name} [${t.points} pkt]`;
+        li.innerHTML=`<input type='checkbox' data-id='${i}' ${t.done?'checked':''}/> <b>${escapeHtml(t.title)}</b> (${t.points} pkt)`;
         ul.appendChild(li);
+        if(t.done) totalPoints += t.points;
     });
+    $('pointsTotal').innerText=totalPoints;
 }
 
-$('addTaskBtn').addEventListener('click', () => {
-    const name = $('newTask').value.trim();
+$('addTask').addEventListener('click', ()=>{
+    const title = $('taskTitle').value.trim();
     const points = parseInt($('taskPoints').value) || 0;
-    if(name) {
-        tasks.push({name, points, done:false});
-        $('newTask').value=''; $('taskPoints').value='';
+    if(!title) return;
+    tasks.push({title, points, done:false});
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    $('taskTitle').value=''; $('taskPoints').value='';
+    renderTasks();
+});
+
+$('taskList').addEventListener('change', e=>{
+    if(e.target.tagName==='INPUT' && e.target.type==='checkbox'){
+        const idx = parseInt(e.target.getAttribute('data-id'));
+        tasks[idx].done=e.target.checked;
+        localStorage.setItem('tasks', JSON.stringify(tasks));
         renderTasks();
     }
 });
 
-$('taskList').addEventListener('change', e => {
-    if(e.target.type === 'checkbox') {
-        const idx = e.target.dataset.index;
-        tasks[idx].done = e.target.checked;
-    }
-});
+renderTasks();
 
-// --- Oś Czasu ---
-let events = [];
-$('addEventBtn').addEventListener('click', () => {
-    const title = prompt('Nazwa wydarzenia');
-    if(title){
-        const date = new Date().toISOString().split('T')[0];
-        events.push({title, date});
-        renderTimeline();
-    }
-});
+// ================= OŚ CZASU =================
+let timeline = JSON.parse(localStorage.getItem('timeline')||'[]');
 
 function renderTimeline(){
-    const container = $('timeline');
-    container.innerHTML='';
-    events.forEach(ev=>{
-        const div = document.createElement('div');
-        div.textContent = `${ev.date}: ${ev.title}`;
-        div.style.borderBottom='1px dashed #aaa';
-        container.appendChild(div);
+    const div = $('timelineGraph'); div.innerHTML='';
+    timeline.sort((a,b)=> new Date(a.date+'T'+(a.time||'00:00')) - new Date(b.date+'T'+(b.time||'00:00')));
+    timeline.forEach(ev=>{
+        const d = document.createElement('div');
+        d.className='timeline-event';
+        d.innerText=`${ev.date} ${ev.time||''} → ${ev.text}`;
+        div.appendChild(d);
     });
 }
 
-// --- Strefa Chill ---
-const chillCanvas = $('chillCanvas');
-const ctx = chillCanvas.getContext('2d');
+$('addTime').addEventListener('click', ()=>{
+    const date=$('timeDate').value; const time=$('timeHour').value; const text=$('timeText').value.trim();
+    if(!date || !text) return;
+    timeline.push({date,time,text});
+    localStorage.setItem('timeline', JSON.stringify(timeline));
+    $('timeDate').value=''; $('timeHour').value=''; $('timeText').value='';
+    renderTimeline();
+});
+
+renderTimeline();
+
+// ================= DZIENNIK =================
+let journal = JSON.parse(localStorage.getItem('journal')||'[]');
+
+function renderJournal(){
+    const ul = $('journalList'); ul.innerHTML='';
+    journal.forEach((entry,i)=>{
+        const li = document.createElement('li'); li.innerText=`${entry.date}: ${entry.text}`;
+        ul.appendChild(li);
+    });
+}
+
+$('saveJournal').addEventListener('click', ()=>{
+    const text=$('journalText').value.trim();
+    if(!text) return;
+    journal.push({text,date:new Date().toLocaleString()});
+    localStorage.setItem('journal', JSON.stringify(journal));
+    $('journalText').value='';
+    renderJournal();
+});
+
+renderJournal();
+
+// ================= STREFA CHILL =================
+const canvas = $('drawCanvas'); const ctx = canvas.getContext('2d');
+function resizeCanvas(){ canvas.width=canvas.offsetWidth; canvas.height=canvas.offsetHeight; }
+window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
 let drawing=false;
-chillCanvas.addEventListener('mousedown',()=>drawing=true);
-chillCanvas.addEventListener('mouseup',()=>drawing=false);
-chillCanvas.addEventListener('mousemove',(e)=>{
-    if(drawing){
-        const rect = chillCanvas.getBoundingClientRect();
-        ctx.fillStyle='rgba(100,150,200,0.5)';
-        ctx.beginPath();
-        ctx.arc(e.clientX-rect.left,e.clientY-rect.top,5,0,Math.PI*2);
-        ctx.fill();
-    }
+canvas.addEventListener('mousedown', ()=>drawing=true);
+canvas.addEventListener('mouseup', ()=>drawing=false);
+canvas.addEventListener('mousemove', e=>{
+    if(!drawing) return;
+    const rect=canvas.getBoundingClientRect();
+    ctx.fillStyle='rgba(0,0,0,0.5)';
+    ctx.fillRect(e.clientX-rect.left,e.clientY-rect.top,4,4);
 });
 
-// --- Dziennik Szyfrowany ---
-async function getKey(password){
-    const enc = new TextEncoder();
-    const keyMaterial = await window.crypto.subtle.importKey(
-        'raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']
-    );
-    return crypto.subtle.deriveKey({name:'PBKDF2', salt:enc.encode('osumyslu_salt'), iterations:100000, hash:'SHA-256'}, keyMaterial, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
-}
+$('clearCanvas').addEventListener('click', ()=>ctx.clearRect(0,0,canvas.width,canvas.height));
 
-async function encryptDiary(text,password){
-    const key = await getKey(password);
-    const enc = new TextEncoder();
-    const iv = window.crypto.getRandomValues(new Uint8Array(12));
-    const cipher = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, enc.encode(text));
-    const blob = new Uint8Array(cipher);
-    const combined = new Uint8Array(iv.length + blob.length);
-    combined.set(iv,0); combined.set(blob,iv.length);
-    return btoa(String.fromCharCode(...combined));
-}
-
-async function decryptDiary(data,password){
-    const key = await getKey(password);
-    const combined = Uint8Array.from(atob(data),c=>c.charCodeAt(0));
-    const iv = combined.slice(0,12);
-    const cipher = combined.slice(12);
-    const dec = await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, cipher);
-    return new TextDecoder().decode(dec);
-}
-
-$('saveDiaryBtn').addEventListener('click',async()=>{
-    const pw = $('diaryPassword').value;
-    const txt = $('diaryInput').value;
-    if(pw && txt){
-        const enc = await encryptDiary(txt,pw);
-        localStorage.setItem('diary',enc);
-        alert('Zapisano!');
-    }
+$('randomChaos').addEventListener('click', ()=>{
+    alert('✨ Bonus Chaos!');
+    // random easter egg
 });
 
-$('loadDiaryBtn').addEventListener('click',async()=>{
-    const pw = $('diaryPassword').value;
-    const data = localStorage.getItem('diary');
-    if(pw && data){
-        try{
-            const txt = await decryptDiary(data,pw);
-            $('diaryInput').value=txt;
-        }catch(e){alert('Błędne hasło lub brak danych');}
-    }
+// ================= ASSISTANT NOTES =================
+let assistantNotes = JSON.parse(localStorage.getItem('assistantNotes')||'[]');
+function renderAssistant(){
+    const ul=$('assistantList'); ul.innerHTML='';
+    assistantNotes.slice().reverse().forEach(n=>{
+        const li=document.createElement('li'); li.innerHTML=`<b>${escapeHtml(n.title)}</b> <span class='mini'>(${n.date})</span><div>${escapeHtml(n.summary)}</div>`;
+        ul.appendChild(li);
+    });
+}
+
+$('copyPrompt').addEventListener('click', ()=>{
+    const prompt=`Proszę przygotuj notatki na temat: <TU_TEMAT> w formacie JSON:
+{
+  "title":"Tytuł",
+  "date":"YYYY-MM-DD",
+  "summary":"Streszczenie 3-6 zdań",
+  "action_items":["kroki"],
+  "tags":["tag1"]
+}`;
+    navigator.clipboard.writeText(prompt);
+    alert('Skopiowano prompt DeepThinking');
 });
 
-// --- Chaos / Easter Eggs ---
+$('previewAssistant').addEventListener('click', ()=>{
+    const text=$('assistantInput').value;
+    $('assistantPreview').style.display='block';
+    $('assistantPreview').innerText=text;
+});
+
+$('saveAssistant').addEventListener('click', ()=>{
+    const text=$('assistantInput').value.trim();
+    if(!text) return;
+    assistantNotes.push({title:'Notatka', summary:text, date:new Date().toLocaleString()});
+    localStorage.setItem('assistantNotes', JSON.stringify(assistantNotes));
+    $('assistantInput').value='';
+    $('assistantPreview').style.display='none';
+    renderAssistant();
+});
+
+renderAssistant();
+
+// ================= EASTER EGGS =================
 setInterval(()=>{
-    if(Math.random()<0.01){
-        alert('🎉 Easter Egg: Znaleziono losowy bonus!');
-    }
-},5000);
-
-console.log('OS Umysłu v1 - gotowe do użycia!');
+    if(Math.random()<0.01) alert('🎉 Losowy bonus chaos!');
+},60000);
