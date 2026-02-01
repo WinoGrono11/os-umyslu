@@ -1,138 +1,49 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OS-Umysłu — v2 (stable)</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>OS Umysłu</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="hdr">
-    <div>
-      <div class="logo">OS-Umysłu <span class="ver">v2</span></div>
-      <div class="sub">lo-fi • chaos • ADHD/autyzm • offline</div>
-    </div>
-    <div id="clock" class="clock">--:--</div>
+
+  <header>
+    <h1>OS Umysłu</h1>
+    <p>spokojnie. lokalnie. po swojemu.</p>
   </header>
 
-  <nav class="nav">
-    <button class="nav-btn" data-view="tasks">Zadania</button>
-    <button class="nav-btn" data-view="timeline">Oś czasu</button>
-    <button class="nav-btn" data-view="journal">Dziennik</button>
-    <button class="nav-btn" data-view="chill">Strefa Chill</button>
-    <button class="nav-btn" data-view="assistant">Assistant Notes</button>
+  <main id="main">
 
-    <button id="btnExport">Export JSON</button>
-    <input id="importFile" type="file" accept="application/json" class="nav-file" />
-  </nav>
-
-  <main>
-    <!-- Tasks -->
-    <section id="tasks" class="view">
-      <h2>Giga-Lista Zadań</h2>
-      <div class="panel">
-        <input id="taskTitle" placeholder="Co zrobić?" />
-        <input id="taskPoints" type="number" placeholder="pkt" min="0" />
-        <select id="taskPriority">
-          <option value="low">niski</option>
-          <option value="med">śr.</option>
-          <option value="high">wysoki</option>
-        </select>
-        <button id="addTask">Dodaj</button>
-      </div>
-
-      <div class="info-row">
-        <div>Punkty: <span id="pointsTotal">0</span></div>
-        <div>Streak: <span id="streak">0</span></div>
-      </div>
-
-      <div id="taskContainer" class="card-list"></div>
+    <!-- DZIENNIK -->
+    <section class="panel" id="journalPanel">
+      <h2 id="journalHeader">Dziennik</h2>
+      <textarea id="journalInput" placeholder="Co dziś było?"></textarea>
+      <button id="addJournal">Zapisz wpis</button>
+      <div id="journalList"></div>
     </section>
 
-    <!-- Timeline -->
-    <section id="timeline" class="view hidden">
-      <h2>Oś czasu</h2>
-      <div class="panel">
-        <label><input id="timeNowBtn" type="checkbox" checked> szybkie (teraz)</label>
-        <input id="timeDate" type="date"/>
-        <input id="timeHour" type="time"/>
-        <input id="timeText" placeholder="Co się wydarzyło?" />
-        <select id="timeType"><option value="note">notatka</option><option value="task">zadanie</option><option value="chill">chill</option></select>
-        <button id="addTime">Dodaj</button>
-      </div>
+    <!-- ZADANIA -->
+    <section class="panel">
+      <h2>Lista zadań</h2>
+      <input id="taskTitle" placeholder="Zadanie" />
+      <input id="taskDesc" placeholder="Opis (opcjonalnie)" />
+      <input id="taskPoints" type="number" placeholder="Punkty" />
+      <button id="addTask">Dodaj</button>
 
-      <div class="timeline-controls">
-        <label>Zoom <input id="zoomRange" type="range" min="0.6" max="1.6" step="0.1" value="1" /></label>
+      <div id="tasks"></div>
+      <div class="points">
+        Punkty: <span id="points">0</span>
       </div>
-
-      <div id="timelineGraph" class="timeline-graph"></div>
     </section>
 
-    <!-- Journal -->
-    <section id="journal" class="view hidden">
-      <h2>Dziennik</h2>
-      <textarea id="journalText" placeholder="Zapisz myśli..."></textarea>
-      <div class="panel">
-        <button id="saveJournal">Zapisz wpis</button>
-        <button id="exportJournal">Eksportuj wpis</button>
-        <button id="clearJournal">Wyczyść wszystkie wpisy</button>
-      </div>
-      <ul id="journalList" class="card-list"></ul>
-    </section>
-
-    <!-- Chill -->
-    <section id="chill" class="view hidden">
-      <h2>Strefa Chill — Paint</h2>
-      <div class="chill-top">
-        <div class="paint-controls">
-          <label>Kolor <input id="brushColor" type="color" value="#222222" /></label>
-          <label>Rozmiar <input id="brushSize" type="range" min="1" max="60" value="6" /></label>
-          <button id="eraser">Gumka</button>
-          <button id="saveChill">Zapisz rysunek</button>
-          <button id="clearCanvas">Wyczyść</button>
-        </div>
-        <div class="chill-actions">
-          <button id="randomChaos">Losowy Chaos</button>
-          <div class="mini">Kliknij i rysuj (pointer/touch supported)</div>
-        </div>
-      </div>
-
-      <div class="canvas-wrap">
-        <canvas id="drawCanvas"></canvas>
-      </div>
-
-      <textarea id="chillNotes" placeholder="Notatki z chwili..."></textarea>
-      <div id="chillGallery" class="card-list"></div>
-    </section>
-
-    <!-- Assistant -->
-    <section id="assistant" class="view hidden">
-      <h2>Assistant Notes</h2>
-
-      <div class="panel">
-        <button id="copyPrompt">Kopiuj prompt DeepThinking</button>
-        <input id="assistantImage" type="file" accept="image/*" />
-      </div>
-
-      <textarea id="assistantInput" placeholder='Wklej tutaj odpowiedź asystenta (JSON lub zwykły tekst)'></textarea>
-
-      <div class="panel">
-        <button id="previewAssistant">Podgląd</button>
-        <button id="saveAssistant">Zapisz</button>
-        <button id="clearAssistant">Wyczyść pole</button>
-      </div>
-
-      <div id="assistantPreview" class="assistant-preview hidden"></div>
-      <ul id="assistantList" class="card-list"></ul>
+    <!-- ZAPIS / WCZYT -->
+    <section class="panel actions">
+      <button id="exportData">Koniec na dziś — zapisz ślad</button>
+      <input type="file" id="importFile" hidden />
+      <button id="importData">Witam ponownie — wczytaj ślad</button>
     </section>
 
   </main>
-
-  <footer>
-    <div>OS-Umysłu — offline • localStorage • no-cloud • stable v2</div>
-  </footer>
 
   <script src="app.js"></script>
 </body>
