@@ -1,47 +1,135 @@
-/* ================= style.css - OS Umysłu v2 (stable) ================= */
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
-body{background:linear-gradient(160deg,#f7efe6,#e8f6f0);color:#222}
-.hdr{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:linear-gradient(90deg,#fff4d9,#e8fff2);border-bottom:1px solid rgba(0,0,0,0.06)}
-.logo{font-weight:700;font-size:20px}
-.sub{font-size:12px;color:#666}
-.clock{font-weight:700}
-.nav{display:flex;gap:8px;padding:10px 12px;background:#f0f6f8;align-items:center;flex-wrap:wrap}
-.nav .nav-btn{padding:8px 12px;border-radius:8px;border:0;background:#f4d9e0;cursor:pointer}
-.nav .nav-file{margin-left:8px}
-main{padding:18px}
-.view{max-width:1200px;margin:0 auto}
-.hidden{display:none}
-h2{margin:0 0 12px 0}
-.panel{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.input,input,textarea,select{padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.08)}
-.card-list{display:flex;flex-direction:column;gap:8px}
-.card{background:rgba(255,255,255,0.95);border-radius:10px;padding:10px;box-shadow:0 6px 18px rgba(15,15,15,0.06)}
-.card-head{display:flex;justify-content:space-between;align-items:center}
-.card-body{margin-top:6px}
-.card-actions{margin-top:8px;display:flex;gap:6px}
-.btn-small{padding:6px 8px;border-radius:6px;border:0;background:#d7f4d7;cursor:pointer}
-.mini{font-size:12px;color:#666}
-.info-row{display:flex;gap:18px;margin-bottom:12px}
-.meta{font-size:12px;color:#666;margin-left:8px}
-/* timeline */
-.timeline-graph{display:flex;flex-direction:row;gap:12px;overflow:auto;padding-bottom:8px}
-.timeline-day{min-width:220px;flex:0 0 auto}
-.timeline-day-head{font-weight:700;background:#fffbe6;padding:6px;border-radius:6px;margin-bottom:6px}
-.timeline-item{background:rgba(220,240,255,0.6);padding:6px;border-radius:6px;margin-bottom:6px}
-.ti-time{font-weight:700;color:#1155cc;margin-bottom:4px}
-/* canvas */
-.canvas-wrap{background:linear-gradient(180deg,#ffffff,#fff7f3);padding:10px;border-radius:10px;border:1px dashed rgba(0,0,0,0.06)}
-#drawCanvas{width:100%;height:360px;border-radius:6px;display:block}
-.paint-controls{display:flex;gap:8px;align-items:center}
-.chill-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.chill-actions{display:flex;gap:8px;align-items:center}
-#chillGallery img{max-width:100%;display:block}
-.assistant-preview{padding:10px;background:linear-gradient(180deg,#fffef0,#fff8e6);border-radius:8px}
-.bonus{position:fixed;right:30px;top:30px;background:#ffd166;padding:10px;border-radius:8px;font-weight:700;z-index:9999;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
-/* responsive */
-@media (max-width:900px){
-  .timeline-graph{flex-direction:column}
-  .timeline-day{min-width:auto}
-  .hdr{flex-direction:column;align-items:flex-start}
+* {
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  background: #0f1115;
+  color: #eaeaea;
+  margin: 0;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.2em;
+}
+
+main {
+  display: grid;
+  gap: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.panel {
+  background: #181b22;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+textarea {
+  width: 100%;
+  height: 140px;
+  margin-bottom: 10px;
+  background: #0f1115;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 10px;
+  resize: vertical;
+}
+
+input {
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 6px;
+  background: #0f1115;
+  color: #fff;
+  border: 1px solid #333;
+}
+
+button {
+  background: #2f6fed;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+/* DZIENNIK */
+
+.entry {
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px dashed #333;
+}
+
+.entry .date {
+  font-size: 0.75em;
+  color: #aaa;
+  margin-bottom: 6px;
+}
+
+.journal-text {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+/* Separator dnia */
+.day-separator {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 2px solid #2f6fed;
+  font-size: 0.85em;
+  color: #8fb0ff;
+}
+
+/* ZADANIA */
+
+.task {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: start;
+  border-top: 1px solid #333;
+  padding-top: 6px;
+  margin-top: 6px;
+}
+
+.task-desc {
+  font-size: 0.85em;
+  color: #aaa;
+}
+
+.points {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* AKCJE */
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+/* TRYB SKUPIENIA */
+
+.focus-mode main > section:not(#journalPanel) {
+  display: none;
+}
+
+.focus-mode textarea {
+  height: 60vh;
 }
