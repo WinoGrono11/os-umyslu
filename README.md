@@ -50,9 +50,13 @@ Dzięki temu projekt:
 
 ## Struktura projektu
 /
+
 ├─ index.html # struktura aplikacji
+
 ├─ style.css # wygląd i czytelność
+
 └─ app.js # cała logika (dziennik, zadania, zapis)
+
 
 
 
