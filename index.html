@@ -1,118 +1,127 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OS Umysłu</title>
-
-  <!-- lo-fi font -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OS‑Umysłu v2</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-  <!-- ================= HEADER ================= -->
-  <header>
-    <h1>🧠 OS Umysłu</h1>
-    <div class="subtitle">zeszyt na sterydach · chaos · lo‑fi · ADHD/autyzm</div>
+  <header class="hdr">
+    <div class="hdr-left">
+      <div class="logo">OS‑Umysłu <span class="ver">v2</span></div>
+      <div class="sub">lo‑fi • chaos • ADHD/autyzm • offline</div>
+    </div>
+    <div class="hdr-right">
+      <div id="clock" class="clock">--:--</div>
+    </div>
   </header>
 
-  <!-- ================= NAV ================= -->
-  <nav>
-    <button data-view="tasks">Zadania</button>
-    <button data-view="timeline">Oś czasu</button>
-    <button data-view="journal">Dziennik</button>
-    <button data-view="chill">Strefa Chill</button>
-    <button data-view="assistant">Assistant Notes</button>
+  <nav class="nav">
+    <button data-view="tasks" class="nav-btn">Zadania</button>
+    <button data-view="timeline" class="nav-btn">Oś czasu</button>
+    <button data-view="journal" class="nav-btn">Dziennik</button>
+    <button data-view="chill" class="nav-btn">Strefa Chill</button>
+    <button data-view="assistant" class="nav-btn">Assistant Notes</button>
+    <button id="btnExport" class="nav-btn">Export JSON</button>
+    <input id="importFile" type="file" accept="application/json" class="nav-file">
   </nav>
 
-  <!-- ================= MAIN ================= -->
   <main>
-
-    <!-- ===== ZADANIA ===== -->
+    <!-- TASKS -->
     <section id="tasks" class="view">
-      <h2>✅ Giga Lista Zadań</h2>
-
+      <h2>Giga‑Lista Zadań</h2>
       <div class="panel">
-        <input id="taskTitle" placeholder="co trzeba zrobić?" />
-        <input id="taskPoints" type="number" placeholder="punkty" />
+        <input id="taskTitle" placeholder="Co zrobić?" />
+        <input id="taskPoints" type="number" placeholder="pkt" min="0" />
+        <select id="taskPriority"><option value="low">niski</option><option value="med">śr.</option><option value="high">wysoki</option></select>
         <button id="addTask">Dodaj</button>
       </div>
 
-      <div class="points">
-        Punkty: <span id="pointsTotal">0</span>
+      <div class="info-row">
+        <div>Punkty: <span id="pointsTotal">0</span></div>
+        <div>Streak: <span id="streak">0</span></div>
       </div>
 
-      <ul id="taskList"></ul>
+      <div id="taskContainer" class="card-list"></div>
     </section>
 
-    <!-- ===== OŚ CZASU ===== -->
+    <!-- TIMELINE -->
     <section id="timeline" class="view hidden">
-      <h2>🕒 Oś Czasu</h2>
-
+      <h2>Oś czasu</h2>
       <div class="panel">
-        <input type="date" id="timeDate">
-        <input type="time" id="timeHour">
-        <input id="timeText" placeholder="co się wydarzyło?" />
+        <input id="timeNowBtn" type="checkbox" checked /> <label for="timeNowBtn">Szybkie (użyj teraz)</label>
+        <input id="timeDate" type="date" />
+        <input id="timeHour" type="time" />
+        <input id="timeText" placeholder="Co się wydarzyło?" />
+        <select id="timeType"><option value="note">notatka</option><option value="task">zadanie</option><option value="chill">chill</option></select>
         <button id="addTime">Dodaj</button>
       </div>
-
-      <div id="timelineGraph"></div>
-    </section>
-
-    <!-- ===== DZIENNIK ===== -->
-    <section id="journal" class="view hidden">
-      <h2>📓 Dziennik</h2>
-
-      <textarea id="journalText" placeholder="pisz cokolwiek…"></textarea>
-      <button id="saveJournal">Zapisz</button>
-
-      <ul id="journalList"></ul>
-    </section>
-
-    <!-- ===== STREFA CHILL ===== -->
-    <section id="chill" class="view hidden">
-      <h2>🌿 Strefa Chill</h2>
-
-      <canvas id="drawCanvas"></canvas>
-
-      <textarea id="chillNotes" placeholder="myśli, rysunki, chaos…"></textarea>
-
-      <div class="panel">
-        <button id="randomChaos">Losowy Chaos</button>
-        <button id="clearCanvas">Wyczyść</button>
+      <div class="timeline-controls">
+        <label>Zoom <input id="zoomRange" type="range" min="0.5" max="2" step="0.1" value="1" /></label>
       </div>
+      <div id="timelineGraph" class="timeline-graph"></div>
     </section>
 
-    <!-- ===== ASSISTANT NOTES ===== -->
+    <!-- JOURNAL -->
+    <section id="journal" class="view hidden">
+      <h2>Dziennik</h2>
+      <textarea id="journalText" placeholder="Zapisz myśli, relacje, obserwacje..."></textarea>
+      <div class="panel">
+        <button id="saveJournal">Zapisz wpis</button>
+        <button id="exportJournal">Eksportuj wpis</button>
+        <button id="clearJournal">Wyczyść wszystkie wpisy</button>
+      </div>
+      <ul id="journalList" class="card-list"></ul>
+    </section>
+
+    <!-- CHILL -->
+    <section id="chill" class="view hidden">
+      <h2>Strefa Chill — Paint</h2>
+      <div class="chill-top">
+        <div class="paint-controls">
+          <label>Kolor <input id="brushColor" type="color" value="#2b2b2b" /></label>
+          <label>Rozmiar <input id="brushSize" type="range" min="1" max="40" value="6" /></label>
+          <button id="eraser">Gumka</button>
+          <button id="saveChill">Zapisz rysunek</button>
+          <button id="clearCanvas">Wyczyść</button>
+        </div>
+        <div class="chill-actions">
+          <button id="randomChaos">Losowy Chaos</button>
+          <div class="mini">Kliknij, rysuj, odkrywaj.</div>
+        </div>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="drawCanvas"></canvas>
+      </div>
+      <textarea id="chillNotes" placeholder="Notatki z chwili, skojarzenia..."></textarea>
+      <div id="chillGallery" class="card-list"></div>
+    </section>
+
+    <!-- ASSISTANT -->
     <section id="assistant" class="view hidden">
-      <h2>🤖 Assistant Notes</h2>
-
-      <button id="copyPrompt">Kopiuj prompt DeepThinking</button>
-
-      <textarea id="assistantInput" placeholder="wklej odpowiedź asystenta (JSON lub tekst)"></textarea>
-
+      <h2>Assistant Notes</h2>
+      <div class="panel">
+        <button id="copyPrompt">Kopiuj prompt DeepThinking</button>
+        <input id="assistantImage" type="file" accept="image/*" />
+      </div>
+      <textarea id="assistantInput" placeholder='Wklej tutaj odpowiedź asystenta (JSON lub zwykły tekst)'></textarea>
       <div class="panel">
         <button id="previewAssistant">Podgląd</button>
         <button id="saveAssistant">Zapisz</button>
+        <button id="clearAssistant">Wyczyść pole</button>
       </div>
-
-      <div id="assistantPreview"></div>
-
-      <ul id="assistantList"></ul>
+      <div id="assistantPreview" class="assistant-preview hidden"></div>
+      <ul id="assistantList" class="card-list"></ul>
     </section>
 
   </main>
 
-  <!-- ================= FOOTER ================= -->
   <footer>
-    OS Umysłu · offline · lokalnie · bez chmury · v2
+    <div>OS‑Umysłu — offline • localStorage • no-cloud • built-for-you</div>
   </footer>
 
-  <!-- ================= JS ================= -->
   <script src="app.js"></script>
 </body>
 </html>
