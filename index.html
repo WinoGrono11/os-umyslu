@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS Umysłu v1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>OS Umysłu v1 - Twoja przestrzeń</h1>
+        <nav>
+            <button id="btnTasks">Giga Lista</button>
+            <button id="btnTimeline">Oś Czasu</button>
+            <button id="btnChill">Strefa Chill</button>
+            <button id="btnDiary">Dziennik</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="tasksSection" class="hidden">
+            <h2>Giga Lista Zadań</h2>
+            <div id="taskForm">
+                <input type="text" id="newTask" placeholder="Nowe zadanie">
+                <input type="number" id="taskPoints" placeholder="Punkty">
+                <button id="addTaskBtn">Dodaj zadanie</button>
+            </div>
+            <ul id="taskList"></ul>
+        </section>
+
+        <section id="timelineSection" class="hidden">
+            <h2>Oś Czasu</h2>
+            <div id="timeline"></div>
+            <button id="addEventBtn">Dodaj wydarzenie</button>
+        </section>
+
+        <section id="chillSection" class="hidden">
+            <h2>Strefa Chill</h2>
+            <textarea id="chillInput" placeholder="Tu możesz pisać lub rysować..."></textarea>
+            <canvas id="chillCanvas"></canvas>
+        </section>
+
+        <section id="diarySection" class="hidden">
+            <h2>Dziennik Szyfrowany</h2>
+            <input type="password" id="diaryPassword" placeholder="Hasło">
+            <textarea id="diaryInput" placeholder="Twoje wpisy..."></textarea>
+            <button id="saveDiaryBtn">Zapisz wpis</button>
+            <button id="loadDiaryBtn">Załaduj wpis</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; OS Umysłu v1 - Chaos, lo-fi, ADHD-friendly</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
