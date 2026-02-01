@@ -1,87 +1,54 @@
-/* OS Umysłu v1 - style lo-fi chaos */
+/* ================= style.css - OS Umysłu v2 ================= */
 
-body {
-    margin: 0;
-    font-family: 'Courier New', monospace;
-    background: linear-gradient(120deg, #f2e9e1, #d0c4b5);
-    color: #333;
-}
+/* ===== RESET ===== */
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Inter', sans-serif; }
+body { background: linear-gradient(120deg, #f2e6d8, #d8f2ea); color:#222; }
 
-header {
-    background-color: #e4d8c3;
-    padding: 1rem;
-    text-align: center;
-    border-bottom: 2px dashed #aaa;
-}
+header { padding: 1rem; text-align:center; background:#ffe599; }
+header h1 { font-family: 'JetBrains Mono', monospace; font-size:2rem; }
+header .subtitle { font-size:0.9rem; color:#555; margin-top:0.2rem; }
 
-nav button {
-    margin: 0.5rem;
-    padding: 0.5rem 1rem;
-    background-color: #c9b79c;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
-}
+nav { display:flex; justify-content:center; gap:0.5rem; flex-wrap:wrap; background:#d9ead3; padding:0.5rem; }
+nav button { padding:0.5rem 1rem; border:none; border-radius:5px; cursor:pointer; background:#a4c2f4; color:#000; transition:0.2s; }
+nav button:hover { background:#6fa8dc; }
 
-nav button:hover {
-    transform: scale(1.1);
-    background-color: #b29e82;
-}
+main { padding:1rem; }
+.view.hidden { display:none; }
+section { margin-bottom:2rem; }
+section h2 { margin-bottom:0.5rem; color:#1155cc; }
 
-main {
-    padding: 1rem;
-}
+.panel { display:flex; gap:0.5rem; margin-bottom:1rem; flex-wrap:wrap; }
+.panel input, .panel button { padding:0.4rem; font-size:0.9rem; }
+input[type='number'] { width:60px; }
 
-.hidden {
-    display: none;
-}
+ul { list-style:none; padding-left:0.5rem; }
+ul li { margin-bottom:0.3rem; }
 
-section {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    border: 1px solid #aaa;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.8);
-}
+#pointsTotal { font-weight:bold; color:#e69138; }
 
-input, textarea, button {
-    font-family: inherit;
-    font-size: 1rem;
-}
+/* ===== OŚ CZASU ===== */
+#timelineGraph { margin-top:1rem; display:flex; flex-direction:column; gap:0.3rem; }
+.timeline-event { padding:0.3rem 0.5rem; border-left:4px solid #6fa8dc; background:rgba(200,230,250,0.3); border-radius:3px; }
 
-textarea {
-    width: 100%;
-    height: 150px;
-    margin-top: 0.5rem;
-}
+/* ===== DZIENNIK ===== */
+#journalText { width:100%; height:150px; margin-bottom:0.5rem; padding:0.5rem; border-radius:5px; border:1px solid #ccc; }
+#journalList li { margin-bottom:0.3rem; }
 
-#chillCanvas {
-    border: 1px dashed #999;
-    width: 100%;
-    height: 200px;
-    margin-top: 0.5rem;
-}
+/* ===== STREFA CHILL ===== */
+#drawCanvas { width:100%; height:300px; border:2px dashed #ff8888; margin-bottom:0.5rem; cursor:crosshair; background:rgba(255,255,255,0.5); }
+#chillNotes { width:100%; height:100px; padding:0.5rem; border-radius:5px; border:1px solid #ccc; margin-bottom:0.5rem; }
 
-footer {
-    text-align: center;
-    padding: 1rem;
-    background-color: #e4d8c3;
-    border-top: 2px dashed #aaa;
-}
+/* ===== ASSISTANT NOTES ===== */
+#assistantInput { width:100%; height:100px; padding:0.5rem; border-radius:5px; border:1px solid #ccc; }
+#assistantPreview { display:none; margin-top:0.5rem; padding:0.5rem; background:rgba(255,255,150,0.3); border-radius:5px; }
+#assistantList li { margin-bottom:0.5rem; background:rgba(200,255,200,0.2); padding:0.3rem; border-radius:3px; }
+.mini { font-size:0.7rem; color:#555; }
 
-/* Responsywność */
-@media (max-width: 768px) {
-    nav button {
-        padding: 0.5rem;
-        margin: 0.25rem;
-    }
+/* ===== FOOTER ===== */
+footer { text-align:center; padding:0.5rem; background:#d9d2e9; color:#333; font-size:0.8rem; margin-top:1rem; }
 
-    textarea {
-        height: 120px;
-    }
-
-    #chillCanvas {
-        height: 150px;
-    }
+/* ===== RESPONSYWNOŚĆ ===== */
+@media (max-width:768px) {
+    nav { flex-direction:column; }
+    #drawCanvas { height:200px; }
 }
