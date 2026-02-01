@@ -1,56 +1,103 @@
-# OS Umysłu v1 - Twoja przestrzeń dla ADHD & autyzmu
+# OS Umysłu
 
-## Opis
+Minimalistyczna, lokalna przestrzeń do ogarniania myśli, dni i zadań.  
+Stworzona z myślą o osobach z ADHD, autyzmem – i wszystkich, którzy potrzebują
+prostego, cichego narzędzia zamiast kolejnej aplikacji „produktywności”.
 
-OS Umysłu v1 to interaktywna przestrzeń cyfrowa zaprojektowana z myślą o osobach z ADHD i autyzmem. To Twój "zeszyt na sterydach" z elementami lo-fi, chaosu i easter-eggi. Możesz korzystać z:
+To nie jest system, który Cię kontroluje.  
+To miejsce, które **czeka aż z niego skorzystasz**.
 
-* **Giga Listy Zadań** z punktami, checkboxami i nagrodami
-* **Osi Czasu / Kalendarza** z możliwością dodawania wydarzeń i notatek
-* **Strefy Chill** do pisania, rysowania i odkrywania mini gier
-* **Dziennika Szyfrowanego** z AES-GCM i lokalnym hasłem
-* **Chaos Engine / Easter-eggi**: losowe bonusy, zmiany kolorów, mini wyzwania
+---
 
-Projekt działa offline i online, responsywny na TV, komputer i telefon.
+## Co to jest?
 
-## Instalacja / Deploy na GitHub Pages
+OS Umysłu to:
+- **dziennik** z automatyczną datą i godziną,
+- **lista zadań** z checkboxami i punktami,
+- **lokalny zapis danych** (bez kont, bez chmury, bez synchronizacji),
+- możliwość **zapisu postępów do pliku** i wczytania ich później,
+- pełne działanie **offline**, z pendrive’a lub przez GitHub Pages.
 
-1. Stwórz nowe repo na GitHub (np. `os-umyslu`).
-2. Wrzuć pliki:
+Nie ma tu presji.  
+Nie ma „ciągów”.  
+Nie ma powiadomień.
 
-   * `index.html`
-   * `style.css`
-   * `app.js`
-3. W ustawieniach repo → **Pages** → wybierz branch `main` i folder `/ (root)`.
-4. Po kilku minutach strona będzie dostępna pod adresem:
-   `https://<twoj-user>.github.io/<repo>/`
+Jest tylko to, co wpiszesz.
 
-## Instrukcja użytkowania
+---
 
-### Nawigacja
+## Jak działa zapis danych?
 
-* **Giga Lista Zadań**: dodawaj zadania, ustawiaj punkty, odhaczaj wykonane. Punkty się sumują i można tworzyć podzadania.
-* **Oś Czasu**: dodawaj wydarzenia dnia, wyświetlają się chronologicznie.
-* **Strefa Chill**: pisz, rysuj i odkrywaj losowe elementy / mini gry.
-* **Dziennik Szyfrowany**: wpisy zapisujesz lokalnie, hasło potrzebne do odblokowania.
+Dane są przechowywane:
+- **tymczasowo** w `localStorage` przeglądarki (żeby nic nie zniknęło po odświeżeniu),
+- **trwale** przez ręczny zapis do pliku `.json`.
 
-### Backup i Import
+### Przyciski:
+- **„Koniec na dziś — zapisz ślad”**  
+  → zapisuje dziennik, zadania i punkty do pliku  
+  → plik trafia do folderu z `index.html` (np. na pendrive)
 
-* Wszystkie dane są przechowywane lokalnie.
-* Możesz eksportować stan Giga Listy i Dziennika do JSON i importować z powrotem w każdej chwili.
+- **„Witam ponownie — wczytaj ślad”**  
+  → wczytuje wcześniej zapisany plik  
+  → wszystko wraca dokładnie tak, jak było
 
-### Responsywność
+Dzięki temu projekt:
+- działa na GitHub Pages,
+- działa offline,
+- nie wymaga backendu ani bazy danych.
 
-* UI dopasowuje się automatycznie do rozdzielczości TV, desktopu i telefonu.
-* Możesz przybliżać / oddalać w Osi Czasu naturalnie.
+---
 
-### Easter-eggi i ukryte tryby
+## Struktura projektu
+/
+├─ index.html # struktura aplikacji
+├─ style.css # wygląd i czytelność
+└─ app.js # cała logika (dziennik, zadania, zapis)
 
-* Losowe alerty i bonusy punktowe
-* Mini gry w Strefie Chill
-* Ukryte kolory i efekty
 
-**Wyzwanie dla Ciebie**: odkryj wszystkie funkcje i zobacz ile easter-eggów uda Ci się znaleźć!
 
-## Licencja
+To wszystko.  
+Im mniej warstw, tym mniej rzeczy może się zepsuć.
 
-Projekt osobisty, możesz używać i modyfikować do własnych potrzeb, nie do komercyjnej dystrybucji.
+---
+
+## Dlaczego tak prosto?
+
+Bo prostota:
+- jest przewidywalna,
+- nie przeciąża,
+- daje poczucie kontroli.
+
+Ten projekt nie próbuje być „lepszą wersją Ciebie”.  
+On tylko **zostawia ślad**, że byłeś tu dziś.
+
+---
+
+## Dla kogo?
+
+Dla każdego, kto:
+- gubi myśli,
+- nie chce kolejnej aplikacji,
+- potrzebuje miejsca „bez oceny”,
+- woli narzędzie niż system.
+
+---
+
+## Licencja / użycie
+
+Projekt osobisty.  
+Możesz go używać, modyfikować, kopiować dla siebie.
+
+Jeśli komuś pomoże — to wystarczy.
+
+---
+
+## Na koniec
+
+Jeśli to czytasz:
+- to znaczy, że OS Umysłu działa,
+- albo że właśnie go odkrywasz.
+
+W obu przypadkach — powodzenia.  
+I spokoju.
+
