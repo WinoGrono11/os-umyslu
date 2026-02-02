@@ -1,135 +1,170 @@
+/* =========================
+   OS UMYSŁU – STYLE.CSS
+   ========================= */
+
+/* Reset */
 * {
   box-sizing: border-box;
-  font-family: system-ui, sans-serif;
-}
-
-body {
-    background-image: url('background.png');
-    background-size: cover; /* dopasowanie do ekranu */
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-h1 {
   margin: 0;
-  font-size: 2.2em;
+  padding: 0;
 }
 
-main {
-  display: grid;
-  gap: 20px;
+/* ZMIEN TU NA SWOJ PLIK TLA */
+:root {
+  --bg-image: url("background.png"); /* <- nazwa pliku tła */
+  --bg-overlay: rgba(10, 10, 15, 0.75);
+
+  --accent: #7df9ff;
+  --accent-soft: rgba(125, 249, 255, 0.25);
+  --text-main: #eaeaea;
+  --text-dim: #b5b5b5;
+  --card-bg: rgba(20, 20, 30, 0.75);
+}
+
+/* Body + tło */
+body {
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text-main);
+
+  background:
+    linear-gradient(var(--bg-overlay), var(--bg-overlay)),
+    var(--bg-image);
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Główna kolumna */
+.app {
+  width: 100%;
   max-width: 900px;
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.panel {
-  background: #181b22;
-  padding: 16px;
-  border-radius: 12px;
+/* Karty / sekcje */
+.section {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
-textarea {
+/* Nagłówki */
+.section h2 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+/* =========================
+   DZIENNIK
+   ========================= */
+
+#journalInput {
   width: 100%;
-  height: 140px;
-  margin-bottom: 10px;
-  background: #0f1115;
-  color: #fff;
-  border: 1px solid #333;
-  padding: 10px;
+  min-height: 120px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--accent-soft);
+  border-radius: 10px;
+  padding: 1rem;
+  color: var(--text-main);
   resize: vertical;
-}
-
-input {
-  width: 100%;
-  margin-bottom: 6px;
-  padding: 6px;
-  background: #0f1115;
-  color: #fff;
-  border: 1px solid #333;
-}
-
-button {
-  background: #2f6fed;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.85;
-}
-
-/* DZIENNIK */
-
-.entry {
-  margin-top: 16px;
-  padding-top: 10px;
-  border-top: 1px dashed #333;
-}
-
-.entry .date {
-  font-size: 0.75em;
-  color: #aaa;
-  margin-bottom: 6px;
-}
-
-.journal-text {
-  white-space: pre-wrap;
   line-height: 1.5;
 }
 
-/* Separator dnia */
-.day-separator {
-  margin-top: 20px;
-  padding-top: 10px;
-  border-top: 2px solid #2f6fed;
-  font-size: 0.85em;
-  color: #8fb0ff;
+#journalInput::placeholder {
+  color: var(--text-dim);
 }
 
-/* ZADANIA */
+.journal-entry {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.journal-date {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+.journal-text {
+  white-space: pre-wrap; /* <-- TO NAPRAWIA SPACJE I ENTERY */
+  line-height: 1.6;
+}
+
+/* =========================
+   LISTA ZADAŃ
+   ========================= */
 
 .task {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  gap: 10px;
+  gap: 1rem;
   align-items: start;
-  border-top: 1px solid #333;
-  padding-top: 6px;
-  margin-top: 6px;
+  padding: 0.5rem 0;
+}
+
+.task input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+}
+
+.task-title {
+  font-weight: 500;
 }
 
 .task-desc {
-  font-size: 0.85em;
-  color: #aaa;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-top: 0.25rem;
 }
 
-.points {
-  margin-top: 10px;
-  font-weight: bold;
+.task-points {
+  font-size: 0.9rem;
+  color: var(--accent);
+  white-space: nowrap;
 }
 
-/* AKCJE */
+/* =========================
+   PRZYCISKI
+   ========================= */
 
-.actions {
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
+button {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
-/* TRYB SKUPIENIA */
-
-.focus-mode main > section:not(#journalPanel) {
-  display: none;
+button:hover {
+  background: var(--accent-soft);
 }
 
-.focus-mode textarea {
-  height: 60vh;
+/* =========================
+   RESPONSYWNOŚĆ
+   ========================= */
+
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
 }
