@@ -4,11 +4,12 @@
 }
 
 body {
-  background: #0f1115;
-  color: #eaeaea;
-  margin: 0;
-  padding: 20px;
+    background-image: url('background.png');
+    background-size: cover; /* dopasowanie do ekranu */
+    background-position: center;
+    background-repeat: no-repeat;
 }
+
 
 header {
   text-align: center;
